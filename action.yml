@@ -27,7 +27,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - uses: metadaoproject/setup-anchor@v2
+    - uses: evan-gray/setup-anchor@c748c7e331768b0158e558152de4053e0fde5dc9
       with:
         node-version: ${{ inputs.node-version }}
         solana-cli-version: ${{ inputs.solana-cli-version }}
