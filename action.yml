@@ -1,31 +1,31 @@
-name: 'Anchor Test'
+name: "Anchor Test"
 description: 'An "anchor test" action that runs in ~1 minute.'
 branding:
   icon: anchor
   color: blue
 inputs:
   node-version:
-    description: 'Version of node.js to use'
+    description: "Version of node.js to use"
     required: false
-    default: '20.11.0' # LTS
+    default: "20.11.0" # LTS
   solana-cli-version:
-    description: 'Version of Solana CLI to use'
+    description: "Version of Solana CLI to use"
     required: false
-    default: '1.17.1' # stable
+    default: "1.17.1" # stable
   anchor-version:
-    description: 'Version of Anchor to use'
+    description: "Version of Anchor to use"
     required: false
-    default: '0.29.0' # latest
+    default: "0.29.0" # latest
   features:
-    description: 'Features to pass to cargo'
+    description: "Features to pass to cargo"
     required: false
-    default: 'default'
+    default: "default"
   working-directory:
-    description: 'Directory of the Anchor workspace'
+    description: "Directory of the Anchor workspace"
     required: false
-    default: '.'
+    default: "."
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - uses: evan-gray/setup-anchor@c748c7e331768b0158e558152de4053e0fde5dc9
       with:
@@ -33,7 +33,7 @@ runs:
         solana-cli-version: ${{ inputs.solana-cli-version }}
         anchor-version: ${{ inputs.anchor-version }}
     - name: Cache node_modules
-      uses: actions/cache@v3
+      uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3.5.0
       with:
         path: ${{ inputs.working-directory }}/node_modules/
         key: node-modules-${{ runner.os }}-build-${{ inputs.node-version }}
@@ -50,17 +50,16 @@ runs:
       shell: bash
       working-directory: ${{ inputs.working-directory }}
     - name: Install Cargo toolchain
-      uses: actions-rs/toolchain@v1
+      uses: actions-rs/toolchain@b2417cde72dcf67f306c0ae8e0828a81bf0b189f # v1.0.6
       with:
         toolchain: stable
         profile: minimal
         components: rustc
     - name: Cache Cargo dependencies
-      uses: Swatinem/rust-cache@v2
+      uses: Swatinem/rust-cache@d1527c8f67ef9af357290475d4af4b0fab8f12e0 # v2.9.3
       with:
-          workspaces: ${{ inputs.working-directory }}
+        workspaces: ${{ inputs.working-directory }}
     - name: Run tests
       run: anchor test -- --features ${{ inputs.features }}
       shell: bash
       working-directory: ${{ inputs.working-directory }}
-
